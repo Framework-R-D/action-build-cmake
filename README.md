@@ -5,7 +5,7 @@
 ## Usage
 
 ```yaml
-- uses: Framework-R-D/action-build-cmake@v1  # pin to commit SHA in production
+- uses: Framework-R-D/action-build-cmake@30bca0b2d76e90cf1cc9e6e863aed5be505e7e61 # v1
   with:
     input-name: value
 ```
