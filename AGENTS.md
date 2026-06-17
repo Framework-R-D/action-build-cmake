@@ -16,8 +16,8 @@ extracted for standalone reuse.
 | ---- | ----------- | -------- | ------- |
 | `source-path` | Path where source code is checked out | False | phlex-src |
 | `build-path` | Path for build directory | False | phlex-build |
-| `target` | CMake target to build (empty for default target) | False |  |
-| `parallel-jobs` | Number of parallel jobs (empty for auto-detect) | False |  |
+| `target` | CMake target to build (empty for default target) | False | |
+| `parallel-jobs` | Number of parallel jobs (empty for auto-detect) | False | |
 
 **Outputs:**
 
