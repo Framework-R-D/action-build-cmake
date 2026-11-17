@@ -28,24 +28,20 @@ runs:
         # Source the container entrypoint script
         . /entrypoint.sh
 
-        # Determine parallel jobs
-        if [ -n "$PARALLEL_JOBS" ]; then
-          jobs_arg="-j $PARALLEL_JOBS"
-        else
-          jobs_arg="-j $(nproc)"
+        jobs="${PARALLEL_JOBS:-$(nproc)}"
+        if [[ ! "$jobs" =~ ^[1-9][0-9]*$ ]]; then
+          echo '::error::parallel-jobs must be a positive integer.'
+          exit 1
         fi
-
-        # Determine target
+        args=(--build . --parallel "$jobs")
         if [ -n "$TARGET" ]; then
-          target_arg="--target $TARGET"
-          echo "Building target: $TARGET"
-        else
-          target_arg=""
-          echo "Building default target"
+          if [[ "$TARGET" == -* || "$TARGET" == *$'\n'* || "$TARGET" == *$'\r'* ]]; then
+            echo '::error::Invalid CMake target.'
+            exit 1
+          fi
+          args+=(--target "$TARGET")
         fi
-
-        # Build
-        cmake --build . $jobs_arg $target_arg
+        cmake "${args[@]}"
       env:
         TARGET: ${{ inputs.target }}
         PARALLEL_JOBS: ${{ inputs.parallel-jobs }}

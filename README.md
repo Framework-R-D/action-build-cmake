@@ -31,6 +31,8 @@
 
 ## Notes
 
+`target` is a single CMake target argument, not a shell- or whitespace-separated option list; leading options and line breaks are rejected. `parallel-jobs` must be a positive integer. Building still executes the configured source/build scripts and requires caller-authorized source and trusted compiler/tool configuration; safe argument quoting is not approval of fork code. CI yamllint is installed from the immutable workflow checkout's locked uv manifest, tracked by Dependabot, and only the CodeQL job has `security-events: write`.
+
 > [!NOTE]
 > This action requires the `ghcr.io/framework-r-d/phlex-ci` container image
 > (sources `/entrypoint.sh` to activate the Spack environment).
