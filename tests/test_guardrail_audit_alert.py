@@ -59,7 +59,9 @@ class GuardrailAlertTests(unittest.TestCase):
                 "import json, os, sys\n"
                 'with open(os.environ["CURL_ARGS"], "w") as stream:\n'
                 "    json.dump(sys.argv[1:], stream)\n"
-                'print("ok")\nprint(os.environ["HTTP_STATUS"])\n'
+                'print("ok")\n'
+                'if "--write-out" in sys.argv[1:]:\n'
+                '    print(os.environ["HTTP_STATUS"])\n'
                 'sys.exit(int(os.environ["CURL_EXIT"]))\n'
             )
             curl.chmod(0o755)
