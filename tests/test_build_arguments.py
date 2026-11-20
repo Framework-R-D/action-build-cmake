@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 class BuildArgumentsTests(unittest.TestCase):
-    """Verify targets cannot inject build-system options through word splitting."""
+    """Verify target names cannot inject build-system syntax."""
 
     def test_target_is_one_argument_and_jobs_are_numeric(self) -> None:
         """Exercise the shipped argument code without the container entrypoint."""
@@ -19,8 +19,9 @@ class BuildArgumentsTests(unittest.TestCase):
         script = 'jobs="' + script
         helpers = 'nproc() { printf "2\\n"; }; cmake() { printf "<%s>\\n" "$@"; };\n'
         for target, jobs, succeeds in [
-            ("named target", "2", True),
+            ("named-target", "2", True),
             ("-- --tool", "2", False),
+            ("PROBE:=$(shell id)", "2", False),
             ("x", "2 --bad", False),
             ("x\n::error::forged", "2", False),
         ]:
@@ -33,7 +34,7 @@ class BuildArgumentsTests(unittest.TestCase):
                 )
                 self.assertEqual(result.returncode == 0, succeeds, result.stderr)
                 if succeeds:
-                    self.assertIn("<named target>", result.stdout)
+                    self.assertIn("<named-target>", result.stdout)
 
 
 if __name__ == "__main__":

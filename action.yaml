@@ -35,7 +35,10 @@ runs:
         fi
         args=(--build . --parallel "$jobs")
         if [ -n "$TARGET" ]; then
-          if [[ "$TARGET" == -* || "$TARGET" == *$'\n'* || "$TARGET" == *$'\r'* ]]; then
+          if [[ "$TARGET" == -* ||
+                "$TARGET" == *$'\n'* ||
+                "$TARGET" == *$'\r'* ||
+                ! "$TARGET" =~ ^[A-Za-z0-9_.+-]+$ ]]; then
             echo '::error::Invalid CMake target.'
             exit 1
           fi
